@@ -1,0 +1,49 @@
+# ===================================================================
+# Arquivos e pastas do CLion e CMake
+# ===================================================================
+
+# Pasta de build principal do CLion. A mais importante!
+cmake-build-*/
+cmake-build-debug
+
+# Arquivos de configuracao de projeto do usuario do CLion.
+# Nao devem ser compartilhados, pois contem caminhos locais.
+.idea/
+
+# Arquivos temporarios gerados pelo CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+
+# O proprio Makefile, caso o CMake o gere.
+Makefile
+
+
+# ===================================================================
+# Arquivos compilados e executaveis
+# ===================================================================
+
+# Executaveis (Windows, Linux, macOS)
+*.exe
+*.out
+*.app
+
+# Bibliotecas e arquivos objeto
+*.a
+*.so
+*.dll
+*.o
+*.obj
+
+
+# ===================================================================
+# Arquivos especificos do seu projeto que nao sao codigo-fonte
+# ===================================================================
+
+# O PDF com os requisitos que voce mencionou
+Guia.pdf
+
+# Outros arquivos de documentacao pessoal ou backups
+*.bak
+*.tmp
