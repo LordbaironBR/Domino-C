@@ -51,6 +51,7 @@ void model_iniciar(GameState *gs) {
     model_encontrar_primeiro_jogador(gs);
 }
 
+
 void model_encontrar_primeiro_jogador(GameState *gs) {
     // Regra: Comeca quem tem 6-6, senao 5-5, etc.
     for (int i = 6; i >= 0; i--) {
@@ -59,11 +60,13 @@ void model_encontrar_primeiro_jogador(GameState *gs) {
                 if (gs->pecas[k].status == NA_MAO_J1) {
                     gs->jogador_atual = 1;
                     model_jogar_peca(gs, k + 1); // joga a peca inicial
+                    model_trocar_jogador(gs);      // <<< ADICIONE ESTA LINHA
                     return;
                 }
                 if (gs->pecas[k].status == NA_MAO_J2) {
                     gs->jogador_atual = 2;
                     model_jogar_peca(gs, k + 1); // joga a peca inicial
+                    model_trocar_jogador(gs);      // <<< ADICIONE ESTA LINHA
                     return;
                 }
             }
