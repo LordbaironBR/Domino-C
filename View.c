@@ -3,24 +3,27 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-// ... (view_limpar_tela e view_desenhar_tudo continuam iguais) ...
-
 void view_limpar_tela() {
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
 
 void view_desenhar_tudo(const GameState *gs) {
     view_limpar_tela();
     printf("==================== JOGO DE DOMINO ====================\n\n");
+
     printf("MESA (Extremidades: %d e %d)\n", gs->extremidade_esq, gs->extremidade_dir);
     printf("  ");
-    for (int i = 0; i < gs->num_pecas_mesa; i++) {
-        printf("[%d|%d] ", gs->mesa[i].ladoA, gs->mesa[i].ladoB);
+
+    if(gs->indice_esq != -1) {
+        for (int i = gs->indice_esq; i <= gs->indice_dir; i++) {
+            printf("[%d|%d] ", gs->mesa[i].ladoA, gs->mesa[i].ladoB);
+        }
     }
+
     printf("\n\n--------------------------------------------------------\n\n");
     int oponente = (gs->jogador_atual == 1) ? 2 : 1;
     printf("Oponente (Jogador %d) tem %d pecas.\n\n", oponente, model_contar_pecas_jogador(gs, oponente));
@@ -68,24 +71,17 @@ int view_pegar_indice_peca(const GameState *gs) {
     return indice;
 }
 
-
-// ===== NOVA FUNCAO =====
-// Pergunta em qual lado o jogador quer jogar
 char view_pegar_lado() {
     char lado;
     while (1) {
         printf("Em qual lado deseja jogar? [E]squerda ou [D]ireita: ");
         scanf(" %c", &lado);
         lado = toupper(lado);
-        if (lado == 'E' || lado == 'D') {
-            return lado;
-        }
+        if (lado == 'E' || lado == 'D') return lado;
         printf("Opcao invalida. Digite E ou D.\n");
     }
 }
 
-
-// ... (view_anunciar_vencedor, view_mostrar_regras, view_mostrar_mensagem continuam iguais) ...
 void view_anunciar_vencedor(const GameState *gs) {
     printf("\n\n!!!!!!!! FIM DE JOGO !!!!!!!!");
     switch (gs->status_jogo) {

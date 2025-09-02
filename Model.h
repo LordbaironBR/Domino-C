@@ -27,10 +27,15 @@ typedef struct {
 // A struct principal que contem TODO o estado do jogo
 typedef struct {
     Peca pecas[28];
-    Peca mesa[28];
+    Peca mesa[28]; // Array para a representacao visual da mesa
     int num_pecas_mesa;
     int extremidade_esq;
     int extremidade_dir;
+
+    // Indices para controlar o array da mesa como uma fila de duas pontas
+    int indice_esq;
+    int indice_dir;
+
     int jogador_atual; // 1 para Jogador 1, 2 para Jogador 2
     StatusJogo status_jogo;
 } GameState;
@@ -39,10 +44,7 @@ typedef struct {
 
 void model_iniciar(GameState *gs);
 void model_encontrar_primeiro_jogador(GameState *gs);
-
-// *** ALTERADO: A funcao agora recebe o 'lado' da jogada ***
 int model_jogar_peca(GameState *gs, int indice_peca_usuario, char lado);
-
 int model_comprar_peca(GameState *gs);
 int model_pode_passar(const GameState *gs);
 void model_trocar_jogador(GameState *gs);

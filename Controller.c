@@ -17,14 +17,10 @@ void controller_iniciar_novo_jogo() {
             switch (escolha) {
                 case 'J': {
                     int indice_peca = view_pegar_indice_peca(&gs);
-
-                    // ===== LOGICA MODIFICADA =====
-                    // Se nao for a primeira jogada, pergunta o lado
-                    char lado = 'D'; // Padrao para primeira jogada
+                    char lado = 'D';
                     if (gs.num_pecas_mesa > 0) {
                         lado = view_pegar_lado();
                     }
-
                     if (model_jogar_peca(&gs, indice_peca, lado)) {
                         turno_finalizado = 1;
                     } else {
@@ -65,8 +61,6 @@ void controller_iniciar_novo_jogo() {
     view_anunciar_vencedor(&gs);
 }
 
-
-// ... (controller_iniciar_sessao continua igual) ...
 void controller_iniciar_sessao() {
     int sair = 0;
     while (!sair) {
