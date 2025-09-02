@@ -1,35 +1,29 @@
 #include "view.h"
 #include <stdio.h>
-#include <stdlib.h> // Para system("cls") e system("clear")
-#include <ctype.h>  // Para toupper()
+#include <stdlib.h>
+#include <ctype.h>
 
-// Limpa a tela do terminal (funciona em Windows e Linux/macOS)
+// ... (view_limpar_tela e view_desenhar_tudo continuam iguais) ...
+
 void view_limpar_tela() {
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
 }
 
-// Desenha o estado completo do jogo na tela (REQ13, REQ14)
 void view_desenhar_tudo(const GameState *gs) {
     view_limpar_tela();
     printf("==================== JOGO DE DOMINO ====================\n\n");
-
-    // 1. Mostra a Mesa e as extremidades
     printf("MESA (Extremidades: %d e %d)\n", gs->extremidade_esq, gs->extremidade_dir);
     printf("  ");
     for (int i = 0; i < gs->num_pecas_mesa; i++) {
         printf("[%d|%d] ", gs->mesa[i].ladoA, gs->mesa[i].ladoB);
     }
     printf("\n\n--------------------------------------------------------\n\n");
-
-    // 2. Mostra informacoes do oponente (escondendo as pecas)
     int oponente = (gs->jogador_atual == 1) ? 2 : 1;
     printf("Oponente (Jogador %d) tem %d pecas.\n\n", oponente, model_contar_pecas_jogador(gs, oponente));
-
-    // 3. Mostra a mao do jogador atual com indices para selecao
     printf("Sua Mao (Jogador %d):\n", gs->jogador_atual);
     for (int i = 0; i < 28; i++) {
         if (gs->pecas[i].status == (gs->jogador_atual == 1 ? NA_MAO_J1 : NA_MAO_J2)) {
@@ -39,29 +33,24 @@ void view_desenhar_tudo(const GameState *gs) {
     printf("\n--------------------------------------------------------\n");
 }
 
-// Mostra o menu principal e retorna a escolha do usuario
 int view_mostrar_menu_principal() {
     int escolha;
     view_limpar_tela();
-    printf("========= BEM-VINDO AO DOMINO =========\n");
-    printf("\n");
+    printf("========= BEM-VINDO AO DOMINO =========\n\n");
     printf("  1. Iniciar Novo Jogo (2 Jogadores)\n");
     printf("  2. Ver Regras do Jogo\n");
-    printf("  0. Sair\n");
-    printf("\n");
+    printf("  0. Sair\n\n");
     printf("Escolha uma opcao: ");
     scanf("%d", &escolha);
     return escolha;
 }
 
-// Mostra o menu de acoes do turno e retorna a escolha
 char view_mostrar_menu_jogada(const GameState *gs) {
     char escolha;
     int pecas_no_monte = 0;
     for(int i = 0; i < 28; i++) {
         if(gs->pecas[i].status == NO_MONTE) pecas_no_monte++;
     }
-
     printf("MONTE: %d pecas restantes.\n", pecas_no_monte);
     printf("Turno do Jogador %d. Escolha sua acao:\n", gs->jogador_atual);
     printf("  [J]ogar uma peca\n");
@@ -69,10 +58,9 @@ char view_mostrar_menu_jogada(const GameState *gs) {
     printf("  [P]assar a vez\n");
     printf("Sua escolha: ");
     scanf(" %c", &escolha);
-    return toupper(escolha); // Retorna em maiuscula para facilitar
+    return toupper(escolha);
 }
 
-// Pergunta ao usuario qual peca ele quer jogar
 int view_pegar_indice_peca(const GameState *gs) {
     int indice;
     printf("Digite o numero da peca que deseja jogar (ex: 5): ");
@@ -80,25 +68,34 @@ int view_pegar_indice_peca(const GameState *gs) {
     return indice;
 }
 
-// Anuncia o vencedor da partida (REQ15)
-void view_anunciar_vencedor(const GameState *gs) {
-    printf("\n\n!!!!!!!! FIM DE JOGO !!!!!!!!");
-    switch (gs->status_jogo) {
-        case VITORIA_J1:
-            printf("\nO JOGADOR 1 VENCEU!\n\n");
-            break;
-        case VITORIA_J2:
-            printf("\nO JOGADOR 2 VENCEU!\n\n");
-            break;
-        case EMPATE_FECHADO:
-            printf("\nJOGO FECHADO! EMPATE!\n\n");
-            break;
-        default:
-            break;
+
+// ===== NOVA FUNCAO =====
+// Pergunta em qual lado o jogador quer jogar
+char view_pegar_lado() {
+    char lado;
+    while (1) {
+        printf("Em qual lado deseja jogar? [E]squerda ou [D]ireita: ");
+        scanf(" %c", &lado);
+        lado = toupper(lado);
+        if (lado == 'E' || lado == 'D') {
+            return lado;
+        }
+        printf("Opcao invalida. Digite E ou D.\n");
     }
 }
 
-// Mostra as regras do jogo (REQ17)
+
+// ... (view_anunciar_vencedor, view_mostrar_regras, view_mostrar_mensagem continuam iguais) ...
+void view_anunciar_vencedor(const GameState *gs) {
+    printf("\n\n!!!!!!!! FIM DE JOGO !!!!!!!!");
+    switch (gs->status_jogo) {
+        case VITORIA_J1: printf("\nO JOGADOR 1 VENCEU!\n\n"); break;
+        case VITORIA_J2: printf("\nO JOGADOR 2 VENCEU!\n\n"); break;
+        case EMPATE_FECHADO: printf("\nJOGO FECHADO! EMPATE!\n\n"); break;
+        default: break;
+    }
+}
+
 void view_mostrar_regras() {
     view_limpar_tela();
     printf("--- REGRAS BASICAS ---\n");
@@ -110,14 +107,13 @@ void view_mostrar_regras() {
     printf("6. Vence quem jogar todas as suas pecas primeiro (bater).\n");
     printf("7. Se o jogo fechar, vence quem tiver menos pecas (ou pontos em caso de empate).\n");
     printf("\nPressione Enter para voltar ao menu...");
-    while (getchar() != '\n'); // Limpa o buffer de entrada
-    getchar(); // Espera o usuario pressionar Enter
+    while (getchar() != '\n');
+    getchar();
 }
 
-// Funcao generica para mostrar mensagens e pausar a tela
 void view_mostrar_mensagem(const char *mensagem) {
     printf("\n>>> %s <<<\n", mensagem);
     printf("Pressione Enter para continuar...");
-    while (getchar() != '\n'); // Limpa o buffer de entrada
-    getchar(); // Espera o usuario pressionar Enter
+    while (getchar() != '\n');
+    getchar();
 }
