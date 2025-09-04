@@ -1,7 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-// Enum para o status da peca, mais legivel que chars ou ints
+// Enum para o status da peca
 typedef enum {
     NO_MONTE,
     NA_MAO_J1,

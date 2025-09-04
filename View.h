@@ -3,7 +3,7 @@
 
 #include "model.h"
 
-// --- PROTOTIPOS DAS FUNCOES DA VISAO ---
+// --- PROTOTIPOS DAS FUNCOES DO VIEW ---
 
 void view_limpar_tela();
 void view_desenhar_tudo(const GameState *gs);

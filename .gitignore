@@ -24,7 +24,7 @@ Makefile
 # Arquivos compilados e executaveis
 # ===================================================================
 
-# Executaveis (Windows, Linux, macOS)
+# Executaveis
 *.exe
 *.out
 *.app
@@ -38,12 +38,12 @@ Makefile
 
 
 # ===================================================================
-# Arquivos especificos do seu projeto que nao sao codigo-fonte
+# Arquivos especificos do projeto que nao sao codigo-fonte
 # ===================================================================
 
-# O PDF com os requisitos que voce mencionou
+# PDF
 Guia.pdf
 
-# Outros arquivos de documentacao pessoal ou backups
+# arquivos de documentacao pessoal ou backups
 *.bak
 *.tmp
